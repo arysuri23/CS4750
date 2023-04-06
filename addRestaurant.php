@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
+  <div class="container">
   <h1>Add Your Restaurant!</h1>
   <form name="restaurantForm" action="home.php" method="post">
     <div class="row mb-3 mx-3">
@@ -47,6 +48,7 @@
   
     <input type="submit" name="actionBtn" value="Add Restaurant"  />
 </form>
+</div>
 <hr/>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
