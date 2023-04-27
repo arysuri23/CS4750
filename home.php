@@ -50,7 +50,58 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $insertCusine = mysqli_query($db_connection, "INSERT INTO `restaurant_cuisine`(`restaurant_id`, `cuisine`) VALUES ('$restaurant_id','$cuisine')");
         $insert3 = mysqli_query($db_connection, "INSERT INTO `adds`(`email`, `restaurant_id`) VALUES ('$email','$restaurant_id')");
         
-    }   
+    }  
+    elseif (!empty($_POST['actionBtn']) && ($_POST['actionBtn'] == "Add Review")){
+        $restaurant_name = $_POST['name'];
+        $overall_rating = intval($_POST['overall_rating']);
+        $food_rating = intval($_POST['food_rating']);
+        $service_rating = intval($_POST['service_rating']);
+        $comment = $_POST['comment'];
+
+
+        $reviews = mysqli_query($db_connection, "SELECT * FROM `review`");
+        $review_id =  mysqli_num_rows($reviews) + 1;
+        $restaurant_row = mysqli_query($db_connection, "SELECT * FROM `restaurant` WHERE `name`='$restaurant_name'");
+        $restaurant = mysqli_fetch_assoc($restaurant_row);
+        $restaurant_id = intval($restaurant['restaurant_id']);
+        
+
+
+        $insert = mysqli_query($db_connection, "INSERT INTO `review`(`review_id`, `overall_rating`, `service_rating`, `food_rating`, `comment`, `restaurant_id`, `email`) VALUES ('$review_id', '$overall_rating', '$service_rating', '$food_rating', '$comment', '$restaurant_id', '$email')");                     
+        if ($overall_rating > 3){
+            $insertLikes = mysqli_query($db_connection, "INSERT INTO `likes`(`reviewer_email`, `restaurant_id`) VALUES ('$email', '$restaurant_id')");
+        }     
+       
+    } 
+    elseif (!empty($_POST['actionBtn']) && ($_POST['actionBtn'] == "Add Question")){
+        $restaurant_name = $_POST['name'];
+        $question = $_POST['question'];
+
+
+        $questions = mysqli_query($db_connection, "SELECT * FROM `question`");
+        $question_id =  mysqli_num_rows($questions) + 1;
+        $restaurant_row = mysqli_query($db_connection, "SELECT * FROM `restaurant` WHERE `name`='$restaurant_name'");
+        $restaurant = mysqli_fetch_assoc($restaurant_row);
+        $restaurant_id = intval($restaurant['restaurant_id']);
+        
+        $date = date("Y-m-d");
+
+
+        $insert = mysqli_query($db_connection, "INSERT INTO `question`(`question_id`, `question_text`, `question_date`, `restaurant_id`) VALUES ('$question_id', '$question', '$date', '$restaurant_id')");                      
+       
+    } 
+    elseif (!empty($_POST['actionBtn']) && ($_POST['actionBtn'] == "Add Answer")){
+        $answer = $_POST['answer'];
+        $question_id = $_POST['question_id'];
+
+        $answers = mysqli_query($db_connection, "SELECT * FROM `answer`");
+        $answer_id =  mysqli_num_rows($answers) + 1;
+        
+        $date = date("Y-m-d");
+
+        $insert = mysqli_query($db_connection, "INSERT INTO `answer`(`answer_id`, `answer_text`, `answer_date`, `question_id`) VALUES ('$answer_id', '$answer', '$date', '$question_id')");                      
+       
+    } 
 }
 
 
@@ -71,8 +122,26 @@ else{
     }
 }
 
+$has_restaurant = FALSE;
+if($revOrMan == "Restaurant Manager"){
+    $restaurants_owned = mysqli_query($db_connection, "SELECT * FROM `adds` WHERE `email`='$email'");
+    if(mysqli_num_rows($restaurants_owned) > 0){
+        $has_restaurant = TRUE;
 
-
+    }
+}
+if($has_restaurant){
+    $restaurants_owned = mysqli_query($db_connection, "SELECT * FROM `adds` WHERE `email`='$email'");
+    $restaurant = mysqli_fetch_assoc($restaurants_owned);
+    $restaurant_id = intval($restaurant['restaurant_id']);
+    $questions_asked = mysqli_query($db_connection, "SELECT * FROM `question` WHERE `restaurant_id`='$restaurant_id'");
+    if(mysqli_num_rows($questions_asked) == 0){
+        $no_questions = TRUE;
+    }
+    else{
+        $no_questions = FALSE;
+    }
+}
 
 ?>
 <!DOCTYPE html>
@@ -164,7 +233,7 @@ else{
             </div>
         <?php elseif ($revOrMan=="Restaurant Reviewer"): ?>
             <div class="_info">
-            <form name="makeReview" action="makeReview.php" method="post">
+            <form name="makeReview" action="restaurantReviewList.php" method="post">
                     <input type="hidden" value="<?php $email;?>">
                     <input type="submit" value="Make a Review!"/>
                 </form>
@@ -176,12 +245,21 @@ else{
                     <input type="submit" value="Add Your Restaurant!"/>
                 </form>
             </div>
+            <?php if ($has_restaurant AND !$no_questions ): ?>
+                <div class="_info">
+                <form name="Answer Questions!" action="answerQuestion.php" method="post">
+                    <input type="submit" value="Answer Questions!"/>
+                </form>
+                </div>  
+            <?php endif ?>
         <?php endif ?>  
         <div class="_info">
             <h1><?php echo $user['name']; ?></h1>
             <p><?php echo $user['email']; ?></p>
             <a href="restaurants.php">Restaurant List</a>
+            <a href="questionList.php">Ask a question</a>
             <a href="logout.php">Logout</a>
+
         </div>
     </div>
 </body>

@@ -33,8 +33,8 @@
 
 <body>
 
-<h1> Click or search a restaurant to see it's reviews! </h1>
-<form name="restaurantSearch" action="restaurantReviews.php" method="post">
+<h1> Click or search a restaurant to ask the manager a question! </h1>
+<form name="restaurantSearch" action="restaurantQuestion.php" method="post">
 <div class="input-group rounded">
   <input id = "name" name = "name" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
   <span class="input-group-text border-0" id="search-addon">
@@ -55,7 +55,7 @@
       </thead>
     <?php foreach ($restaurants as $row): ?>
       <tr>
-         <td><a href = "restaurantReviews.php?name=<?php echo $row['name']; ?>"  ><?php echo $row['name']; ?></td>
+         <td><a href = "restaurantQuestion.php?name=<?php echo $row['name']; ?>"  ><?php echo $row['name']; ?></td>
          <td><?php echo $row['address']; ?></td>
          <td><?php echo $row['open']; ?></td>        
          <td><?php echo $row['close']; ?></td>  

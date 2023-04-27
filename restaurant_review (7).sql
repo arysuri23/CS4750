@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 05, 2023 at 05:51 PM
+-- Generation Time: Apr 27, 2023 at 04:40 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -38,7 +38,6 @@ CREATE TABLE `adds` (
 
 INSERT INTO `adds` (`email`, `restaurant_id`) VALUES
 ('ahs8gup@virginia.edu', 11),
-('ahs8gup@virginia.edu', 12),
 ('britneylover123@gmail.com', 8),
 ('charlotte@hotmail.com', 9),
 ('icanmanage@gmail.com', 10),
@@ -59,24 +58,26 @@ INSERT INTO `adds` (`email`, `restaurant_id`) VALUES
 CREATE TABLE `answer` (
   `answer_id` int(11) NOT NULL,
   `answer_text` varchar(300) NOT NULL,
-  `answer_date` date NOT NULL
+  `answer_date` date NOT NULL,
+  `question_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `answer`
 --
 
-INSERT INTO `answer` (`answer_id`, `answer_text`, `answer_date`) VALUES
-(1, 'We use a special blend of olive oil and grease to get that extra bend!', '2022-03-30'),
-(2, 'Refunds are returned to the card that was originally charged', '2022-04-07'),
-(3, 'There\'s a garage on the corner of Market and Main!', '2022-04-07'),
-(4, 'From 2-5pm today!', '2022-04-04'),
-(5, 'Google maps', '2022-04-05'),
-(6, 'It is part of our limited Shrek Fish deal', '2022-04-06'),
-(7, 'Sir, this is a Wendy\'s', '2022-04-06'),
-(8, 'Sorry about that! Our website is experiencing tenchical difficulties. Stay tuned!', '2022-04-07'),
-(9, 'Follow the link titled \'Careers\' at the bottom of the page!', '2022-04-08'),
-(10, 'Unfortunately those only come with kids\' meals.', '2022-04-09');
+INSERT INTO `answer` (`answer_id`, `answer_text`, `answer_date`, `question_id`) VALUES
+(1, 'We use a special blend of olive oil and grease to get that extra bend!', '2022-03-30', 1),
+(2, 'Refunds are returned to the card that was originally charged', '2022-04-07', 2),
+(3, 'There\'s a garage on the corner of Market and Main!', '2022-04-07', 3),
+(4, 'From 2-5pm today!', '2022-04-04', 4),
+(5, 'Google maps', '2022-04-05', 5),
+(6, 'It is part of our limited Shrek Fish deal', '2022-04-06', 6),
+(7, 'Sir, this is a Wendy\'s', '2022-04-06', 7),
+(8, 'Sorry about that! Our website is experiencing tenchical difficulties. Stay tuned!', '2022-04-07', 8),
+(9, 'Follow the link titled \'Careers\' at the bottom of the page!', '2022-04-08', 9),
+(10, 'Unfortunately those only come with kids\' meals.', '2022-04-09', 10),
+(11, 'Steak for sure', '2023-04-27', 13);
 
 -- --------------------------------------------------------
 
@@ -98,7 +99,9 @@ CREATE TABLE `google_users` (
 
 INSERT INTO `google_users` (`id`, `google_id`, `name`, `email`, `profile_image`) VALUES
 (1, '1', 'Ary', 'ary@gmail.com', 'pic.jpg'),
-(2, '100209149992067497978', 'Ary Suri', 'ahs8gup@virginia.edu', 'https://lh3.googleusercontent.com/a/AGNmyxaYQNBuSl1vSsEPGpeZaph7qryiluvRG2BAfcBU=s96-c');
+(2, '100209149992067497978', 'Ary Suri', 'ahs8gup@virginia.edu', 'https://lh3.googleusercontent.com/a/AGNmyxaYQNBuSl1vSsEPGpeZaph7qryiluvRG2BAfcBU=s96-c'),
+(3, '112291612364843661878', 'Aryaman Suri', 'arysuri23@gmail.com', 'https://lh3.googleusercontent.com/a/AGNmyxZNxWaFZgnJsfCYpzEfajX-o9G61sSFUVXsCTCl=s96-c'),
+(4, '101330121154448442855', 'Coding Email', 'aryscodingemail@gmail.com', 'https://lh3.googleusercontent.com/a/AGNmyxYtQwl7-M0xXQui4JFe6eIuLP05bxyOa97tgivL=s96-c');
 
 -- --------------------------------------------------------
 
@@ -117,6 +120,7 @@ CREATE TABLE `likes` (
 
 INSERT INTO `likes` (`reviewer_email`, `restaurant_id`) VALUES
 ('abraham123@hotmail.com', 2),
+('aryscodingemail@gmail.com', 10),
 ('cornbreadjesus@yahoo.com', 1),
 ('gordonramsey@gmail.com', 9),
 ('jimbo12345@yahoo.com', 2),
@@ -137,14 +141,14 @@ CREATE TABLE `question` (
   `question_id` int(11) NOT NULL,
   `question_text` varchar(300) NOT NULL,
   `question_date` date NOT NULL,
-  `answer_id` int(11) NOT NULL
+  `restaurant_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `question`
 --
 
-INSERT INTO `question` (`question_id`, `question_text`, `question_date`, `answer_id`) VALUES
+INSERT INTO `question` (`question_id`, `question_text`, `question_date`, `restaurant_id`) VALUES
 (1, 'Why are your tacos soggy', '2022-03-29', 1),
 (2, 'How are refunds processed', '2022-04-01', 2),
 (3, 'Where can I find parking', '2022-04-04', 3),
@@ -154,7 +158,10 @@ INSERT INTO `question` (`question_id`, `question_text`, `question_date`, `answer
 (7, 'When will the McRib return', '2022-04-05', 7),
 (8, 'Why can\'t I order online?', '2022-04-06', 8),
 (9, 'Where can I apply for a job', '2022-04-07', 9),
-(10, 'Why didn\'t I get a toy with my order today?', '2022-04-08', 10);
+(10, 'Why didn\'t I get a toy with my order today?', '2022-04-08', 10),
+(11, 'When is happy hour?', '2023-04-26', 1),
+(12, 'What are the spice options?', '2023-04-26', 11),
+(13, 'Is steak or lamb better?', '2023-04-26', 11);
 
 -- --------------------------------------------------------
 
@@ -187,8 +194,7 @@ INSERT INTO `restaurant` (`restaurant_id`, `image_url`, `address`, `on_elevate`,
 (8, 'boylan.png', '12 Grimmauld Pl.', 0, '15:00:00', '02:00:00', 'Boylan Heights'),
 (9, 'logo.jpg', '74 Chancellor\'s Street', 0, '11:00:00', '19:00:00', 'Pronto'),
 (10, 'logo.png', '88th Ninth St.', 1, '11:00:00', '19:30:00', 'Roots'),
-(11, 'boxd.png', '909 West Main St, Charlottesville, VA 22903', 1, '10:00:00', '21:30:00', 'Boxd Kitchen'),
-(12, 'boxd.png', '909 West Main St, Charlottesville, VA 22903', 1, '10:00:00', '21:30:00', 'Boxd Kitchen');
+(11, 'boxd.png', '909 West Main St, Charlottesville, VA 22903', 1, '10:00:00', '21:30:00', 'Boxd Kitchen');
 
 -- --------------------------------------------------------
 
@@ -216,8 +222,7 @@ INSERT INTO `restaurant_cuisine` (`restaurant_id`, `cuisine`) VALUES
 (8, 'Burgers'),
 (9, 'Italian'),
 (10, 'Rice Bowls/Salads'),
-(11, 'Mediterranian'),
-(12, 'Mediterranian');
+(11, 'Mediterranian');
 
 -- --------------------------------------------------------
 
@@ -236,6 +241,7 @@ CREATE TABLE `restaurant_manager` (
 
 INSERT INTO `restaurant_manager` (`email`, `name`) VALUES
 ('ahs8gup@virginia.edu', 'Ary Suri'),
+('arysuri23@gmail.com', 'Manager12345'),
 ('Britneylover123@gmail.com', 'Joseph Dillard'),
 ('Charlotte@hotmail.com', 'Charlotte Bell'),
 ('icanmanage@gmail.com', 'Chris Oh'),
@@ -255,37 +261,38 @@ INSERT INTO `restaurant_manager` (`email`, `name`) VALUES
 
 CREATE TABLE `review` (
   `review_id` int(11) NOT NULL,
-  `review_date` date NOT NULL,
   `overall_rating` int(11) NOT NULL,
   `service_rating` int(11) NOT NULL,
   `food_rating` int(11) NOT NULL,
   `comment` varchar(250) DEFAULT NULL,
   `restaurant_id` int(11) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `points` int(11) NOT NULL
+  `email` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `review`
 --
 
-INSERT INTO `review` (`review_id`, `review_date`, `overall_rating`, `service_rating`, `food_rating`, `comment`, `restaurant_id`, `email`, `points`) VALUES
-(1, '2022-03-29', 1, 0, 2, 'awful experience', 1, 'rater1@hotmail.com', 2),
-(2, '2022-03-30', 5, 5, 4, 'mid tbh', 1, 'thegoodrater@hotmail.com', 1),
-(3, '2022-04-03', 9, 9, 9, 'great experience', 2, 'jimbo12345@yahoo.com', -1),
-(4, '2022-04-03', 3, 5, 2, 'honestly could be better', 2, 'therater@gmail.com', 324),
-(5, '2022-04-06', 6, 3, 3, 'decent', 1, 'miles_rates@gmail.com', 6),
-(6, '2022-04-06', 7, 2, 9, 'i liked it! got to watch #got with my hubby there', 5, 'theaustralianguy@hotmail.com', 53),
-(7, '2022-04-07', 2, 1, 1, 'Made me want to throw up', 1, 'cornbreadjesus@yahoo.com', 5),
-(8, '2022-04-08', 3, 1, 4, 'when will kihei retire?', 9, 'kiheishamer@virginia.edu', -4),
-(9, '2022-04-09', 7, 4, 6, 'great food! service wasn\'t great though', 9, 'gordonramsey@gmail.com', 2),
-(10, '2022-04-10', 6, 5, 7, 'I want to rate it higher but the fish was green', 2, 'abraham123@hotmail.com', 4);
+INSERT INTO `review` (`review_id`, `overall_rating`, `service_rating`, `food_rating`, `comment`, `restaurant_id`, `email`) VALUES
+(1, 1, 1, 2, 'awful experience', 1, 'rater1@hotmail.com'),
+(2, 5, 5, 4, 'mid tbh', 1, 'thegoodrater@hotmail.com'),
+(3, 4, 3, 4, 'great experience', 2, 'jimbo12345@yahoo.com'),
+(4, 3, 5, 2, 'honestly could be better', 2, 'therater@gmail.com'),
+(5, 5, 3, 3, 'decent', 1, 'miles_rates@gmail.com'),
+(6, 5, 2, 5, 'i liked it! got to watch #got with my hubby there', 5, 'theaustralianguy@hotmail.com'),
+(7, 2, 1, 1, 'Made me want to throw up', 1, 'cornbreadjesus@yahoo.com'),
+(8, 3, 1, 4, 'when will kihei retire?', 9, 'kiheishamer@virginia.edu'),
+(9, 5, 4, 5, 'great food! service wasn\'t great though', 9, 'gordonramsey@gmail.com'),
+(10, 5, 5, 3, 'I want to rate it higher but the fish was green', 2, 'abraham123@hotmail.com'),
+(11, 3, 2, 3, 'Decent ', 1, 'aryscodingemail@gmail.com'),
+(12, 1, 1, 1, 'awful', 1, 'aryscodingemail@gmail.com'),
+(13, 4, 4, 4, 'So good!', 10, 'aryscodingemail@gmail.com');
 
 --
 -- Triggers `review`
 --
 DELIMITER $$
-CREATE TRIGGER `food_rating_trigger` BEFORE UPDATE ON `review` FOR EACH ROW BEGIN
+CREATE TRIGGER `food_rating_trigger` BEFORE INSERT ON `review` FOR EACH ROW BEGIN
     IF new.food_rating > 5 THEN
         SET new.food_rating = 5;
     ELSEIF new.food_rating < 1 THEN
@@ -295,7 +302,7 @@ END
 $$
 DELIMITER ;
 DELIMITER $$
-CREATE TRIGGER `overall_rating_trigger` BEFORE UPDATE ON `review` FOR EACH ROW BEGIN
+CREATE TRIGGER `overall_rating_trigger` BEFORE INSERT ON `review` FOR EACH ROW BEGIN
     IF new.overall_rating > 5 THEN
         SET new.overall_rating = 5;
     ELSEIF new.overall_rating < 1 THEN
@@ -305,7 +312,7 @@ END
 $$
 DELIMITER ;
 DELIMITER $$
-CREATE TRIGGER `service_rating_trigger` BEFORE UPDATE ON `review` FOR EACH ROW BEGIN
+CREATE TRIGGER `service_rating_trigger` BEFORE INSERT ON `review` FOR EACH ROW BEGIN
     IF new.service_rating > 5 THEN
         SET new.service_rating = 5;
     ELSEIF new.service_rating < 1 THEN
@@ -332,6 +339,7 @@ CREATE TABLE `reviewer` (
 
 INSERT INTO `reviewer` (`email`, `display_name`) VALUES
 ('abraham123@hotmail.com', 'Lincoln Trissel'),
+('aryscodingemail@gmail.com', 'Test Ary'),
 ('cornbreadjesus@yahoo.com', 'Elena Belena'),
 ('gordonramsey@gmail.com', 'Bobby Flay'),
 ('jimbo12345@yahoo.com', 'Jim Ryan'),
@@ -448,7 +456,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `google_users`
 --
 ALTER TABLE `google_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

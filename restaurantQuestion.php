@@ -19,7 +19,7 @@ else {
 <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Make Review</title>
+    <title>Question</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 <body>
@@ -27,30 +27,17 @@ else {
     <h1> This restaurant does not exist, please try again </h1>
     <a href = "restrauntReviewList.php"> back
   <?php else: ?>
-  <h1>Make your review! </h1>
-  <form name="reviewForm" action="home.php" method="post">
+  <h1>Ask a Question! </h1>
+  <form name="questionForm" action="home.php" method="post">
     <div class="row mb-3 mx-3">
      Restaurant Name:
      <input id="name" name = "name"  value= "<?php echo $name_value; ?>" readonly="readonly"/>
     </div> 
-    <div class="row mb-3 mx-3">
-    Food Rating(1-5):
-    <input type="number" id="food_rating" name="food_rating" min="1" max="5" required>
-    </div> 
-    <div class="row mb-3 mx-3">
-    Service Rating(1-5):
-    <input type="number" id="service_rating" name="service_rating" min="1" max="5" required>
-    </div> 
-    <div class="row mb-3 mx-3">
-    Overall Rating(1-5):
-    <input type="number" id="overall_rating" name="overall_rating" min="1" max="5" required>
-    </div> 
-    <div class="row mb-3 mx-3">
-    Any comments?:
-    <input type="text" class="form-control" name="comment" id = "comment" />
+    Question:
+    <input type="text" class="form-control" name="question" id = "question" />
     </div> 
 
-    <input type="submit" name="actionBtn" value="Add Review"  />
+    <input type="submit" name="actionBtn" value="Add Question"  />
 </form>
 <?php endif ?>  
 <hr/>

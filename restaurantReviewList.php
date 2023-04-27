@@ -32,16 +32,15 @@
 </head>
 
 <body>
-
-<h1> Click or search a restaurant to see it's reviews! </h1>
-<form name="restaurantSearch" action="restaurantReviews.php" method="post">
-<div class="input-group rounded">
-  <input id = "name" name = "name" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
-  <span class="input-group-text border-0" id="search-addon">
+    <h1> Click or search the restraunt you want to review! </h1>
+    <form name="restaurantSearch" action="makeReview.php" method="post">
+    <div class="input-group rounded">
+    <input id = "name" name = "name" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+    <span class="input-group-text border-0" id="search-addon">
     <i class="fas fa-search"></i>
-  </span>
-</div>
-</form>
+    </span>
+    </div>
+    </form>
     <div class="row justify-content-center"> 
     
     <table class="w3-table w3-bordered w3-card-4 center" style="width:50%">
@@ -50,12 +49,12 @@
         <th width="20%">Name        
         <th width="20%">Address        
         <th width="5%">Open 
-        <th width="5%">Close
+          <th width="5%">Close
       </tr>
       </thead>
     <?php foreach ($restaurants as $row): ?>
       <tr>
-         <td><a href = "restaurantReviews.php?name=<?php echo $row['name']; ?>"  ><?php echo $row['name']; ?></td>
+         <td><a href = "makeReview.php?name=<?php echo $row['name']; ?>"  > <?php echo $row['name']; ?></td>
          <td><?php echo $row['address']; ?></td>
          <td><?php echo $row['open']; ?></td>        
          <td><?php echo $row['close']; ?></td>  
