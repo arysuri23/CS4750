@@ -22,22 +22,49 @@ else {
     <title>Question</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
-<body>
+<style>
+input, textarea {
+  background-color: #f7f7ff;
+}
+tr {
+    border-bottom: 2px solid #ddd;
+}
+th {
+  color: white;
+}
+tr:nth-child(even) {
+  background-color: #e6e6e6;
+}
+tr:hover {background-color: #D6EEEE;}
+table {
+  border: 1px solid black;
+  padding: 1px;
+}
+</style>
+<body style="background-color:#f7f7ff;">
+    <br>
+    <div class="container">
+    <form action="questionList.php">
+        <center><button action="submit" class="btn btn-info" style="background-color:#E53E3E">Select a Different Restaurant</button></center>
+    </form>
+    </div>
+  <div class="container">
   <?php if(!$exists): ?>
-    <h1> This restaurant does not exist, please try again </h1>
+    <h1>This restaurant does not exist, please try again</h1>
     <a href = "restrauntReviewList.php"> back
   <?php else: ?>
-  <h1>Ask a Question! </h1>
-  <form name="questionForm" action="home.php" method="post">
+  <h1 class="display-4">Ask a Question!</h1>
     <div class="row mb-3 mx-3">
-     Restaurant Name:
+    Restaurant Name:
      <input id="name" name = "name"  value= "<?php echo $name_value; ?>" readonly="readonly"/>
     </div> 
-    Question:
-    <input type="text" class="form-control" name="question" id = "question" />
+    <h6>Question:</h6>
+    <form name="questionForm" action="home.php" method="post">
+    <input type="text" class="form-control" name="question" id = "question" /><br>
+    <center><button type="submit" name="actionBtn" class="btn btn-info" style="background-color:#E53E3E">Post Question</button></center>
     </div> 
 
-    <input type="submit" name="actionBtn" value="Add Question"  />
+    
 </form>
 <?php endif ?>  
 <hr/>

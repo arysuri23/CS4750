@@ -28,12 +28,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>F</title>
+    <title>Add a Question</title>
 </head>
-
-<body>
-
-<h1> Click or search a restaurant to ask the manager a question! </h1>
+<style>
+tr {
+    border-bottom: 2px solid #ddd;
+}
+th {
+  color: white;
+}
+tr:nth-child(even) {
+  background-color: #e6e6e6;
+}
+tr:hover {background-color: #D6EEEE;}
+table {
+  border: 1px solid black;
+  padding: 1px;
+}
+</style>
+<body style="background-color:#f7f7ff;">
+    <br>
+    <div class="container">
+    <form action="home.php">
+        <center><button action="submit" class="btn btn-info" style="background-color:#E53E3E">Return to Home</button></center>
+    </form>
+    </div>
+<div class="container">
+<h1 class="display-4"> Select a Restaurant</h1>
 <form name="restaurantSearch" action="restaurantQuestion.php" method="post">
 <div class="input-group rounded">
   <input id = "name" name = "name" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
@@ -63,6 +84,7 @@
     <?php endforeach; ?>
     </table>
     </div>
+</div>
 </body>
 
 </html>

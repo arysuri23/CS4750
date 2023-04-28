@@ -4,7 +4,7 @@ if(isset($_SESSION['login_id'])){
     header('Location: home.php');
     exit;
 }
-require 'google-api/vendor/autoload.php';
+require '../google-login-php/google-api/vendor/autoload.php';
 // Creating new google client instance
 $client = new Google_Client();
 // Enter your Client ID

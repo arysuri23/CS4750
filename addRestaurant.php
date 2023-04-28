@@ -7,8 +7,31 @@
     <title>Add Restaurant</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
-<body>
-  <h1>Add Your Restaurant!</h1>
+<style>
+tr {
+    border-bottom: 2px solid #ddd;
+}
+th {
+  color: white;
+}
+tr:nth-child(even) {
+  background-color: #e6e6e6;
+}
+tr:hover {background-color: #D6EEEE;}
+table {
+  border: 1px solid black;
+  padding: 1px;
+}
+</style>
+<body style="background-color:#f7f7ff;">
+    <br>
+    <div class="container">
+    <form action="home.php">
+        <center><button action="submit" class="btn btn-info" style="background-color:#E53E3E">Return to Menu</button></center>
+    </form>
+    </div>
+  <div class="container">
+  <h1 class="display-4">Add Your Restaurant!</h1>
   <form name="restaurantForm" action="home.php" method="post">
     <div class="row mb-3 mx-3">
      Restaurant Name:
@@ -27,11 +50,11 @@
     <input type="text" class="form-control" name="cuisine" required /> 
     </div> 
     <div class="row mb-3 mx-3"> 
-    On Elevate?
     </div>
     <div> 
+      On Elevate? 
       <input type="radio" id="Yes" name="elevate" value="Yes">
-      <label for="Yes">Yes</label> <br>
+      <label for="Yes">Yes</label>
       <input type="radio" id="No" name="elevate" value="No">
       <label for="No">No</label> <br>
     </div>
@@ -44,9 +67,10 @@
     <div class="row mb-3 mx-3"> 
         <input type="time" id="closeTime" name="closeTime" required>
     </div>
-  
-    <input type="submit" name="actionBtn" value="Add Restaurant"  />
+    <br>
+    <center><button type="submit" name="actionBtn" class="btn btn-info" style="background-color:#E53E3E">Add Restaurant</button></center>
 </form>
+</div>
 <hr/>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
