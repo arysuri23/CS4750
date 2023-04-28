@@ -26,8 +26,10 @@
     <title>Answer</title>
 </head>
 
-<body>
-    <h1> Answer Questions </h1>
+<body style="background-color:#f7f7ff;">
+    <br>
+    <div class="container">
+    <h1 class="display-4"> Answer Questions </h1>
     <ul>
         <?php foreach ($questions_asked as $q): ?>
         <div>
@@ -46,6 +48,7 @@
         <hr>
         <?php endforeach; ?>
     </ul>
+</div>
 </body>
 
 </html>

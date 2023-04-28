@@ -31,7 +31,14 @@
     <title>F</title>
 </head>
 
-<body>
+<body style="background-color:#f7f7ff;">
+    <br>
+    <div class="container">
+    <form action="home.php">
+        <center><button action="submit" class="btn btn-info" style="background-color:#E53E3E">Return to Home</button></center>
+    </form>
+    </div>
+    <div class="container">
     <h1> Click or search the restraunt you want to review! </h1>
     <form name="restaurantSearch" action="makeReview.php" method="post">
     <div class="input-group rounded">
@@ -62,6 +69,7 @@
     <?php endforeach; ?>
     </table>
     </div>
+</div>
 </body>
 
 </html>

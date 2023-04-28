@@ -104,7 +104,7 @@ endforeach;
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>F</title>
+    <title>Review</title>
     <style>
         body{margin-top:20px;
 background:#eee;
@@ -257,23 +257,27 @@ ul, ul li {
     </style>
 </head>
 
-<body>
-
-
+<body style="background-color:#f7f7ff;">
+    <br>
+    <div class="container">
+    <form action="restaurants.php">
+        <center><button action="submit" class="btn btn-info" style="background-color:#E53E3E">Return to Restaurants</button></center>
+    </form>
+    </div>
 <div class="container">
-<?php if(!$exists): ?>
+    <div id="reviews" class="review-section">
+        <?php if(!$exists): ?>
     <h1> This restaurant does not exist, please try again </h1>
-    <a href = "restrauntReviewList.php"> back
-  <?php else: ?>
-    <h1> Reviews for <?php echo $name_value ?> : </h1>
+        <?php else: ?>
+    <h1 class="display-4"> Reviews for <?php echo $name_value ?>: </h1>
     <?php if ($num_reviews == 0):  ?>       
         <h2> No reviews for this restaurant yet! <h2>
-    <?php endif ?>  
-    <div id="reviews" class="review-section">
         <div class="d-flex align-items-center justify-content-between mb-4">
             <h4 class="m-0"><?php echo $num_reviews ;?> Reviews</h4>
         </div>
-        <h2> Overall Review </h2> 
+        <?php endif ?>  
+        <br>
+        <h2 class="lead"> Overall Review </h2> 
         <div class="row">
             
             <div class="col-md-6">
@@ -358,7 +362,8 @@ ul, ul li {
                 </table>
             </div>
         </div>
-        <h2> Food Review </h2> 
+        <br>
+        <h2 class="lead"> Food Review </h2> 
         <div class="row">
             <div class="col-md-6">
                 <table class="stars-counters">
@@ -442,7 +447,8 @@ ul, ul li {
                 </table>
             </div>
         </div>
-        <h2> Service Review </h2> 
+        <br>
+        <h2 class="lead"> Service Review </h2> 
         <div class="row">
             <div class="col-md-6">
                 <table class="stars-counters">
@@ -529,12 +535,12 @@ ul, ul li {
     </div>
 
     <div class="review-list">
-        <h2> Comments: </h2>
+        <h2 class="display-4"> Comments: </h2> <br>
         <ul>
             <?php foreach($reviews as $review): ?>
                 
             <li>
-                <h4> <?php echo $review['comment']; ?>
+                <p> <?php echo $review['comment']; ?> </p>
             </li>
             <?php endforeach; ?>
         </ul>
