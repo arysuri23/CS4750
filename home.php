@@ -5,9 +5,15 @@ if(!isset($_SESSION['login_id'])){
     exit;
 }
 $id = $_SESSION['login_id'];
-$get_google_user = mysqli_query($db_connection, "SELECT * FROM `google_users` WHERE `google_id`='$id'");
-if(mysqli_num_rows($get_google_user) > 0){
-    $user = mysqli_fetch_assoc($get_google_user);
+
+$query = "SELECT * FROM `google_users` WHERE `google_id`=?";
+$get_user_statement = $db_connection->prepare($query);
+$get_user_statement->bind_param("i", $id);
+$get_user_statement->execute();
+$get_user_result = $get_user_statement->get_result();
+
+if(mysqli_num_rows($get_user_result) > 0){
+    $user = $get_user_result->fetch_assoc();
 }
 else{
     header('Location: logout.php');
@@ -15,18 +21,21 @@ else{
 }
 
 $email = $user['email'];
-
+$revOrMan="";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     if (!empty($_POST['actionBtn']) && ($_POST['actionBtn'] == "Submit")){
         $displayName = $_POST['name'];
         $revOrMan = $_POST['revOrMan'];
         if ($revOrMan == "Restaurant Reviewer"){
-                $insert = mysqli_query($db_connection, "INSERT INTO `reviewer`(`email`,`display_name`) VALUES('$email','$displayName')");
+            $insert = "INSERT INTO `reviewer`(`email`,`display_name`) VALUES(?, ?)";
         }
         elseif ($revOrMan == "Restaurant Manager"){
-            $insert = mysqli_query($db_connection, "INSERT INTO `restaurant_manager`(`email`,`name`) VALUES('$email','$displayName')");
+            $insert = "INSERT INTO `restaurant_manager`(`email`,`name`) VALUES(?, ?)";
         }
+        $insert_statement = $db_connection->prepare($insert);
+        $insert_statement->bind_param("ss", $email, $displayName);
+        $insert_statement->execute();
     }
     elseif (!empty($_POST['actionBtn']) && ($_POST['actionBtn'] == "Add Restaurant")){
         $restaurant_name = $_POST['name'];
@@ -50,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $insertCusine = mysqli_query($db_connection, "INSERT INTO `restaurant_cuisine`(`restaurant_id`, `cuisine`) VALUES ('$restaurant_id','$cuisine')");
         $insert3 = mysqli_query($db_connection, "INSERT INTO `adds`(`email`, `restaurant_id`) VALUES ('$email','$restaurant_id')");
         
-    }  
+    }
     elseif (!empty($_POST['actionBtn']) && ($_POST['actionBtn'] == "Add Review")){
         $restaurant_name = $_POST['name'];
         $overall_rating = intval($_POST['overall_rating']);
@@ -59,17 +68,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $comment = $_POST['comment'];
 
 
-        $reviews = mysqli_query($db_connection, "SELECT * FROM `review`");
+        $rev_stmt = $db_connection->prepare("SELECT * FROM `review`");
+        $rev_stmt->execute();
+        $reviews = $rev_stmt->get_result();
         $review_id =  mysqli_num_rows($reviews) + 1;
-        $restaurant_row = mysqli_query($db_connection, "SELECT * FROM `restaurant` WHERE `name`='$restaurant_name'");
-        $restaurant = mysqli_fetch_assoc($restaurant_row);
+
+        $row_stmt = $db_connection->prepare("SELECT * FROM `restaurant` WHERE `name`='$restaurant_name'");
+        $row_stmt->execute();
+        $restaurant_row = $row_stmt->get_result();
+        $restaurant = $restaurant_row->fetch_assoc();
         $restaurant_id = intval($restaurant['restaurant_id']);
         
-
-
-        $insert = mysqli_query($db_connection, "INSERT INTO `review`(`review_id`, `overall_rating`, `service_rating`, `food_rating`, `comment`, `restaurant_id`, `email`) VALUES ('$review_id', '$overall_rating', '$service_rating', '$food_rating', '$comment', '$restaurant_id', '$email')");                     
+        $insert_rev = $db_connection->prepare("INSERT INTO `review`(`review_id`, `overall_rating`, `service_rating`, `food_rating`, `comment`, `restaurant_id`, `email`) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $insert_rev->bind_param("iiiisis", $review_id, $overall_rating, $service_rating, $food_rating, $comment, $restaurant_id, $email);
+        $insert_rev->execute();
         if ($overall_rating > 3){
-            $insertLikes = mysqli_query($db_connection, "INSERT INTO `likes`(`reviewer_email`, `restaurant_id`) VALUES ('$email', '$restaurant_id')");
+            $insertLikes = $db_connection->prepare("INSERT INTO `likes`(`reviewer_email`, `restaurant_id`) VALUES (?, ?)");
+            $insertLikes->bind_param("si", $email, $restaurant_id);
+            $insertLikes->execute();
         }     
        
     } 
@@ -101,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
         $insert = mysqli_query($db_connection, "INSERT INTO `answer`(`answer_id`, `answer_text`, `answer_date`, `question_id`) VALUES ('$answer_id', '$answer', '$date', '$question_id')");                      
        
-    } 
+    }
 }
 
 
@@ -150,12 +166,11 @@ if($has_restaurant){
 <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Friendbook</title>
+    <title>Home</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title><?php echo $user['name']; ?> - LaravelTuts</title>
     <style>
         *,
         *::before,

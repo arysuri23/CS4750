@@ -6,9 +6,15 @@
         exit;
     }
     $id = $_SESSION['login_id'];
-    $get_google_user = mysqli_query($db_connection, "SELECT * FROM `google_users` WHERE `google_id`='$id'");
-    if(mysqli_num_rows($get_google_user) > 0){
-        $user = mysqli_fetch_assoc($get_google_user);
+    $query = "SELECT * FROM `google_users` WHERE `google_id`=?";
+    $get_user_statement = $db_connection->prepare($query);
+    $get_user_statement->bind_param("i", $id);
+    $get_user_statement->execute();
+    $get_user_result = $get_user_statement->get_result();
+    //$get_google_user = mysqli_query($db_connection, "SELECT * FROM `google_users` WHERE `google_id`='$id'");
+    if(mysqli_num_rows($get_user_result) > 0){
+        //$user = mysqli_fetch_assoc($get_google_user);
+        $user = $get_user_result->fetch_assoc();
     }
     else{
         header('Location: logout.php');
@@ -44,6 +50,7 @@ tr:hover {background-color: #D6EEEE;}
 table {
   border: 1px solid black;
   padding: 1px;
+  margin: 30px;
 }
 </style>
 <body style="background-color:#f7f7ff;">
@@ -71,8 +78,8 @@ table {
       <tr style="background-color:#B0B0B0">
         <th width="25%">Name        
         <th width="25%">Address        
-        <th width="5%">Open 
-          <th width="5%">Close
+        <th width="10%">Open 
+          <th width="10%">Close
             <th width="10%"><center>On Elevate</center>
       </tr>
       </thead>
@@ -80,9 +87,9 @@ table {
       <tr>
          <td><a href = "makeReview.php?name=<?php echo $row['name']; ?>"  > <?php echo $row['name']; ?></td>
          <td><?php echo $row['address']; ?></td>
-         <td><?php echo $row['open']; ?></td>        
-         <td><?php echo $row['close']; ?></td>  
-         <td><center><?php echo $row['on_elevate']; ?></center></td>  
+         <td><?php echo date_create_from_format('H:i:s', $row['open'])->format('h:i A'); ?></td>       
+         <td><?php echo date_create_from_format('H:i:s', $row['close'])->format('h:i A'); ?></td> 
+         <td align="center"><?php echo $row['on_elevate'] == 1 ? 'Yes' : 'No'; ?></td>   
       </tr>
     <?php endforeach; ?>
     </table>

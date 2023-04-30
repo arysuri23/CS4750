@@ -6,9 +6,15 @@
         exit;
     }
     $id = $_SESSION['login_id'];
-    $get_google_user = mysqli_query($db_connection, "SELECT * FROM `google_users` WHERE `google_id`='$id'");
-    if(mysqli_num_rows($get_google_user) > 0){
-        $user = mysqli_fetch_assoc($get_google_user);
+    $query = "SELECT * FROM `google_users` WHERE `google_id`=?";
+    $get_user_statement = $db_connection->prepare($query);
+    $get_user_statement->bind_param("i", $id);
+    $get_user_statement->execute();
+    $get_user_result = $get_user_statement->get_result();
+    //$get_google_user = mysqli_query($db_connection, "SELECT * FROM `google_users` WHERE `google_id`='$id'");
+    if(mysqli_num_rows($get_user_result) > 0){
+        //$user = mysqli_fetch_assoc($get_google_user);
+        $user = $get_user_result->fetch_assoc();
     }
     else{
         header('Location: logout.php');
@@ -16,7 +22,11 @@
     }
     
     $email = $user['email'];
-    $restaurants = mysqli_query($db_connection, "SELECT * FROM `restaurant`;");
+    //$restaurants = mysqli_query($db_connection, "SELECT * FROM `restaurant`;");
+    $q = "SELECT * FROM `restaurant`";
+    $stmt = $db_connection->prepare($q);
+    $stmt->execute();
+    $restaurants = $stmt->get_result();
 
 ?>
 

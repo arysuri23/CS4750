@@ -29,16 +29,26 @@ if(isset($_GET['code'])):
         $full_name = mysqli_real_escape_string($db_connection, trim($google_account_info->name));
         $email = mysqli_real_escape_string($db_connection, $google_account_info->email);
         $profile_pic = mysqli_real_escape_string($db_connection, $google_account_info->picture);
+
         // checking user already exists or not
-        $get_user = mysqli_query($db_connection, "SELECT `google_id` FROM `google_users` WHERE `google_id`='$id'");
-        if(mysqli_num_rows($get_user) > 0){
+        $query = "SELECT google_id FROM google_users WHERE google_id=?";
+        $get_user_statement = $db_connection->prepare($query);
+        $get_user_statement->bind_param("i", $id);
+        $get_user_statement->execute();
+        $get_user_result = $get_user_statement->get_result();
+
+        //$get_user = mysqli_query($db_connection, "SELECT `google_id` FROM `google_users` WHERE `google_id`='$id'");
+        if(mysqli_num_rows($get_user_result) > 0){
             $_SESSION['login_id'] = $id; 
             header('Location: home.php');
             exit;
         }
         else{
             // if user not exists we will insert the user
-            $insert = mysqli_query($db_connection, "INSERT INTO `google_users`(`google_id`,`name`,`email`,`profile_image`) VALUES('$id','$full_name','$email','$profile_pic')");
+            $insert = $db_connection->prepare("INSERT INTO `google_users`(`google_id`, `name`, `email`, `profile_image`) VALUES (?, ?, ?, ?)");
+            $insert->bind_param("isss", $id, $full_name, $email, $profile_pic);
+            $insert->execute();
+            //$insert = mysqli_query($db_connection, "INSERT INTO `google_users`(`google_id`,`name`,`email`,`profile_image`) VALUES('$id','$full_name','$email','$profile_pic')");
             if($insert){
                 $_SESSION['login_id'] = $id; 
                 header('Location: home.php');
@@ -63,7 +73,7 @@ else:
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login - LaravelTuts</title>
+    <title>Login</title>
     <style>
         *,
         *::before,

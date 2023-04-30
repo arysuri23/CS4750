@@ -1,13 +1,19 @@
 <?php 
     require "config.php";
     $id = $_SESSION['login_id'];
-    $get_google_user = mysqli_query($db_connection, "SELECT * FROM `google_users` WHERE `google_id`='$id'");
-    if(mysqli_num_rows($get_google_user) > 0){
-        $user = mysqli_fetch_assoc($get_google_user);
-    }  
+    $query = "SELECT * FROM `google_users` WHERE `google_id`=?";
+    $get_user_statement = $db_connection->prepare($query);
+    $get_user_statement->bind_param("i", $id);
+    $get_user_statement->execute();
+    $get_user_result = $get_user_statement->get_result();
+    if(mysqli_num_rows($get_user_result) > 0){
+        $user = $get_user_result->fetch_assoc();
+    } 
     $email = $user['email'];
+
     $restaurants_owned = mysqli_query($db_connection, "SELECT * FROM `adds` WHERE `email`='$email'");
     $restaurant = mysqli_fetch_assoc($restaurants_owned);
+    
     $restaurant_id = intval($restaurant['restaurant_id']);
     $questions_asked = mysqli_query($db_connection, "SELECT * FROM `question` WHERE `restaurant_id`='$restaurant_id'");
     $questions = mysqli_fetch_assoc($questions_asked);
