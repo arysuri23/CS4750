@@ -52,13 +52,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         }
         $open = $_POST['openTime'] . ":00";
         $close = $_POST['closeTime'] . ":00";
-        $restaurants = mysqli_query($db_connection, "SELECT * FROM `restaurant`");
+        
+        $stmt = $db_connection->prepare("SELECT * FROM `restaurant`");
+        $stmt->execute();
+        $restaurants = $stmt->get_result();
+        // $restaurants = mysqli_query($db_connection, "SELECT * FROM `restaurant`");
         $restaurant_id = mysqli_num_rows($restaurants) + 1;
 
-    
-        $insert = mysqli_query($db_connection, "INSERT INTO `restaurant`(`restaurant_id`, `image_url`, `address`, `on_elevate`, `open`, `close`, `name`) VALUES ('$restaurant_id', '$image', '$address', '$elevate','$open', '$close', '$restaurant_name')");
-        $insertCusine = mysqli_query($db_connection, "INSERT INTO `restaurant_cuisine`(`restaurant_id`, `cuisine`) VALUES ('$restaurant_id','$cuisine')");
-        $insert3 = mysqli_query($db_connection, "INSERT INTO `adds`(`email`, `restaurant_id`) VALUES ('$email','$restaurant_id')");
+        $insert = $db_connection->prepare("INSERT INTO `restaurant`(`restaurant_id`, `image_url`, `address`, `on_elevate`, `open`, `close`, `name`) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $insert->bind_param("ississs", $restaurant_id, $image, $address, $elevate, $open, $close, $restaurant_name);
+        $insert->execute();
+
+        $insertCusine = $db_connection->prepare("INSERT INTO `restaurant_cuisine`(`restaurant_id`, `cuisine`) VALUES (?, ?)");
+        $insertCusine->bind_param("is", $restaurant_id, $cuisine);
+        $insertCusine->execute();
+
+        $insert3 = $db_connection->prepare("INSERT INTO `adds`(`email`, `restaurant_id`) VALUES (?, ?)");
+        $insert3->bind_param("si", $email, $restaurant_id);
+        $insert3->execute();
+
+        // $insert = mysqli_query($db_connection, "INSERT INTO `restaurant`(`restaurant_id`, `image_url`, `address`, `on_elevate`, `open`, `close`, `name`) VALUES ('$restaurant_id', '$image', '$address', '$elevate','$open', '$close', '$restaurant_name')");
+        // $insertCusine = mysqli_query($db_connection, "INSERT INTO `restaurant_cuisine`(`restaurant_id`, `cuisine`) VALUES ('$restaurant_id','$cuisine')");
+        // $insert3 = mysqli_query($db_connection, "INSERT INTO `adds`(`email`, `restaurant_id`) VALUES ('$email','$restaurant_id')");
         
     }
     elseif (!empty($_POST['actionBtn']) && ($_POST['actionBtn'] == "Add Review")){
@@ -94,38 +109,71 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $restaurant_name = $_POST['name'];
         $question = $_POST['question'];
 
+        // $questions = mysqli_query($db_connection, "SELECT * FROM `question`");
 
-
-        $questions = mysqli_query($db_connection, "SELECT * FROM `question`");
+        $stmtQ = $db_connection->prepare("SELECT * FROM `question`");
+        $stmtQ->execute();
+        $questions = $stmtQ->get_result();
         $question_id =  mysqli_num_rows($questions) + 1;
-        $restaurant_row = mysqli_query($db_connection, "SELECT * FROM `restaurant` WHERE `name`='$restaurant_name'");
-        $restaurant = mysqli_fetch_assoc($restaurant_row);
+        
+        // $restaurant_row = mysqli_query($db_connection, "SELECT * FROM `restaurant` WHERE `name`='$restaurant_name'");
+        // $restaurant = mysqli_fetch_assoc($restaurant_row);
+
+        $row_stmt = $db_connection->prepare("SELECT * FROM `restaurant` WHERE `name`='$restaurant_name'");
+        $row_stmt->execute();
+        $restaurant_row = $row_stmt->get_result();
+        $restaurant = $restaurant_row->fetch_assoc();
         $restaurant_id = intval($restaurant['restaurant_id']);
         
         $date = date("Y-m-d");
 
-
-        $insert = mysqli_query($db_connection, "INSERT INTO `question`(`question_id`, `question_text`, `question_date`, `restaurant_id`, `answered`) VALUES ('$question_id', '$question', '$date', '$restaurant_id', '0')");                      
+        $answered = 0;
+        $insertQ = $db_connection->prepare("INSERT INTO `question`(`question_id`, `question_text`, `question_date`, `restaurant_id`, `answered`) VALUES (?, ?, ?, ?, ?)");
+        $insertQ->bind_param("issii", $question_id, $question, $date, $restaurant_id, $answered);
+        $insertQ->execute();
+        // $insert = mysqli_query($db_connection, "INSERT INTO `question`(`question_id`, `question_text`, `question_date`, `restaurant_id`, `answered`) VALUES ('$question_id', '$question', '$date', '$restaurant_id', '0')");                      
        
     } 
     elseif (!empty($_POST['actionBtn']) && ($_POST['actionBtn'] == "Add Answer")){
         $answer = $_POST['answer'];
         $question_id = $_POST['question_id'];
         $question_id = intval($question_id);
-        $answers = mysqli_query($db_connection, "SELECT * FROM `answer`");
+
+        $stmtA = $db_connection->prepare("SELECT * FROM `answer`");
+        $stmtA->execute();
+        $answers = $stmtA->get_result();
+
+        // $answers = mysqli_query($db_connection, "SELECT * FROM `answer`");
         $answer_id =  mysqli_num_rows($answers) + 1;
         
         $date = date("Y-m-d");
-        $insert = mysqli_query($db_connection, "INSERT INTO `answer`(`answer_id`, `answer_text`, `answer_date`, `question_id`) VALUES ('$answer_id', '$answer', '$date', '$question_id')");        
-        $update = mysqli_query($db_connection, "UPDATE `question` SET `answered`='1' WHERE `question`.`question_id`='$question_id'");           
+
+        $insertA = $db_connection->prepare("INSERT INTO `answer`(`answer_id`, `answer_text`, `answer_date`, `question_id`) VALUES (?, ?, ?, ?)");
+        $insertA->bind_param("issi", $answer_id, $answer, $date, $question_id);
+        $insertA->execute();
+
+        $updateQ = $db_connection->prepare("UPDATE `question` SET `answered`='1' WHERE `question`.`question_id`=?");
+        $updateQ->bind_param("i", $question_id);
+        $updateQ->execute();
+
+        // $insert = mysqli_query($db_connection, "INSERT INTO `answer`(`answer_id`, `answer_text`, `answer_date`, `question_id`) VALUES ('$answer_id', '$answer', '$date', '$question_id')");        
+        // $update = mysqli_query($db_connection, "UPDATE `question` SET `answered`='1' WHERE `question`.`question_id`='$question_id'");           
        
     }
 }
 
 
-$reviewer = mysqli_query($db_connection, "SELECT * FROM `reviewer` WHERE `email` = '$email'");
+// $reviewer = mysqli_query($db_connection, "SELECT * FROM `reviewer` WHERE `email` = '$email'");
+$stmtReviewer = $db_connection->prepare("SELECT * FROM `reviewer` WHERE `email` = ?");
+$stmtReviewer->bind_param('s', $email);
+$stmtReviewer->execute();
+$reviewer = $stmtReviewer->get_result();
 
-$manager = mysqli_query($db_connection, "SELECT * FROM `restaurant_manager` WHERE `email` = '$email'");
+// $manager = mysqli_query($db_connection, "SELECT * FROM `restaurant_manager` WHERE `email` = '$email'");
+$stmtManager = $db_connection->prepare("SELECT * FROM `restaurant_manager` WHERE `email` = ?");
+$stmtManager->bind_param('s', $email);
+$stmtManager->execute();
+$manager = $stmtManager->get_result();
 
 if (mysqli_num_rows($reviewer) == 0 && mysqli_num_rows($manager) == 0){
     $revOrManChosen = FALSE;
@@ -145,7 +193,6 @@ if($revOrMan == "Restaurant Manager"){
     $restaurants_owned = mysqli_query($db_connection, "SELECT * FROM `adds` WHERE `email`='$email'");
     if(mysqli_num_rows($restaurants_owned) > 0){
         $has_restaurant = TRUE;
-
     }
 }
 if($has_restaurant){

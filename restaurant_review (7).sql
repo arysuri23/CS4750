@@ -114,15 +114,15 @@ CREATE TABLE `likes` (
 --
 
 INSERT INTO `likes` (`reviewer_email`, `restaurant_id`) VALUES
-('abraham123@hotmail.com', 2),
-('cornbreadjesus@yahoo.com', 1),
+('abraham123@gmail.com', 2),
+('cornbreadjesus@gmail.com', 1),
 ('gordonramsey@gmail.com', 9),
-('jimbo12345@yahoo.com', 2),
-('kiheishamer@virginia.edu', 9),
+('jimbo12345@gmail.com', 2),
+('kiheishamer@gmail.com', 9),
 ('miles_rates@gmail.com', 1),
-('theaustralianguy@hotmail.com', 5),
-('thegoodrater@hotmail.com', 1),
-('thegoodrater@hotmail.com', 2),
+('theaustralianguy@gmail.com', 5),
+('thegoodrater@gmail.com', 1),
+('thegoodrater@gmail.com', 2),
 ('therater@gmail.com', 2);
 
 -- --------------------------------------------------------
@@ -231,15 +231,15 @@ CREATE TABLE `restaurant_manager` (
 
 INSERT INTO `restaurant_manager` (`email`, `name`) VALUES
 ('Britneylover123@gmail.com', 'Joseph Dillard'),
-('Charlotte@hotmail.com', 'Charlotte Bell'),
+('Charlotte@gmail.com', 'Charlotte Bell'),
 ('icanmanage@gmail.com', 'Chris Oh'),
 ('idobemanaging@gmail.com', 'Brandon White'),
 ('joocemanager@gmail.com', 'Thomas Shelby'),
 ('manager1@gmail.com', 'Patrick Smith'),
 ('manager3@gmail.com', 'Mary Lane'),
 ('managurrr@virginia.edu', 'Jack Smith'),
-('restaurantmanager@hotmail.com', 'John Paul'),
-('themanager@yahoo.com', 'Lauren Cox');
+('restaurantmanager@gmail.com', 'John Paul'),
+('themanager@gmail.com', 'Lauren Cox');
 
 -- --------------------------------------------------------
 
@@ -262,16 +262,16 @@ CREATE TABLE `review` (
 --
 
 INSERT INTO `review` (`review_id`, `overall_rating`, `service_rating`, `food_rating`, `comment`, `restaurant_id`, `email`) VALUES
-(1, 1, 1, 2, 'awful experience', 1, 'rater1@hotmail.com'),
-(2, 5, 5, 4, 'mid tbh', 1, 'thegoodrater@hotmail.com'),
-(3, 4, 3, 4, 'great experience', 2, 'jimbo12345@yahoo.com'),
+(1, 1, 1, 2, 'awful experience', 1, 'rater1@gmail.com'),
+(2, 5, 5, 4, 'mid tbh', 1, 'thegoodrater@gmail.com'),
+(3, 4, 3, 4, 'great experience', 2, 'jimbo12345@gmail.com'),
 (4, 3, 5, 2, 'honestly could be better', 2, 'therater@gmail.com'),
 (5, 5, 3, 3, 'decent', 1, 'miles_rates@gmail.com'),
-(6, 5, 2, 5, 'i liked it! got to watch #got with my hubby there', 5, 'theaustralianguy@hotmail.com'),
-(7, 2, 1, 1, 'Made me want to throw up', 1, 'cornbreadjesus@yahoo.com'),
+(6, 5, 2, 5, 'i liked it! got to watch #got with my hubby there', 5, 'theaustralianguy@gmail.com'),
+(7, 2, 1, 1, 'Made me want to throw up', 1, 'cornbreadjesus@gmail.com'),
 (8, 3, 1, 4, 'when will kihei retire?', 9, 'kiheishamer@virginia.edu'),
 (9, 5, 4, 5, 'great food! service wasn\'t great though', 9, 'gordonramsey@gmail.com'),
-(10, 5, 5, 3, 'I want to rate it higher but the fish was green', 2, 'abraham123@hotmail.com');
+(10, 5, 5, 3, 'I want to rate it higher but the fish was green', 2, 'abraham123@gmail.com');
 
 --
 -- Triggers `review`
@@ -323,15 +323,15 @@ CREATE TABLE `reviewer` (
 --
 
 INSERT INTO `reviewer` (`email`, `display_name`) VALUES
-('abraham123@hotmail.com', 'Lincoln Trissel'),
-('cornbreadjesus@yahoo.com', 'Elena Belena'),
+('abraham123@gmail.com', 'Lincoln Trissel'),
+('cornbreadjesus@gmail.com', 'Elena Belena'),
 ('gordonramsey@gmail.com', 'Bobby Flay'),
-('jimbo12345@yahoo.com', 'Jim Ryan'),
+('jimbo12345@gmail.com', 'Jim Ryan'),
 ('kiheishamer@virginia.edu', 'Armaan Franklin'),
 ('miles_rates@gmail.com', 'Miles Wilcox'),
-('rater1@hotmail.com', 'Justin Bieber'),
-('theaustralianguy@hotmail.com', 'Chris Hemsworth'),
-('thegoodrater@hotmail.com', 'John Cena'),
+('rater1@gmail.com', 'Justin Bieber'),
+('theaustralianguy@gmail.com', 'Chris Hemsworth'),
+('thegoodrater@gmail.com', 'John Cena'),
 ('therater@gmail.com', 'Bob Roberto');
 
 -- --------------------------------------------------------

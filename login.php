@@ -9,9 +9,9 @@ require 'google-api/vendor/autoload.php';
 // Creating new google client instance
 $client = new Google_Client();
 // Enter your Client ID
-$client->setClientId('739444035110-v6gb9db3ipi7ag3isequ3up504h55mn1.apps.googleusercontent.com');
+$client->setClientId(getenv('CLIENT_ID'));
 // Enter your Client Secrect
-$client->setClientSecret('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');
+$client->setClientSecret(getenv('CLIENT_SECRET'));
 // Enter the Redirect URL
 $client->setRedirectUri('http://localhost/CS4750/login.php');
 // Adding those scopes which we want to get (email & profile Information)
@@ -31,15 +31,22 @@ if(isset($_GET['code'])):
         $email = mysqli_real_escape_string($db_connection, $google_account_info->email);
         $profile_pic = mysqli_real_escape_string($db_connection, $google_account_info->picture);
         // checking user already exists or not
-        $get_user = mysqli_query($db_connection, "SELECT `google_id` FROM `google_users` WHERE `google_id`='$id'");
-        if(mysqli_num_rows($get_user) > 0){
+        // $get_user = mysqli_query($db_connection, "SELECT `google_id` FROM `google_users` WHERE `google_id`='$id'");
+        $get_user_statement = $db_connection->prepare("SELECT `google_id` FROM `google_users` WHERE `google_id`=?");
+        $get_user_statement->bind_param("i", $id);
+        $get_user_statement->execute();
+        $get_user_result = $get_user_statement->get_result();
+        if(mysqli_num_rows($get_user_result) > 0){
             $_SESSION['login_id'] = $id; 
             header('Location: home.php');
             exit;
         }
         else{
             // if user not exists we will insert the user
-            $insert = mysqli_query($db_connection, "INSERT INTO `google_users`(`google_id`,`name`,`email`,`profile_image`) VALUES('$id','$full_name','$email','$profile_pic')");
+            // $insert = mysqli_query($db_connection, "INSERT INTO `google_users`(`google_id`,`name`,`email`,`profile_image`) VALUES('$id','$full_name','$email','$profile_pic')");
+            $insert = $db_connection->prepare("INSERT INTO `google_users`(`google_id`,`name`,`email`,`profile_image`) VALUES(?, ?, ?, ?)");
+            $insert->bind_param("isss", $id, $full_name, $email, $profile_pic);
+            $insert->execute();
             if($insert){
                 $_SESSION['login_id'] = $id; 
                 header('Location: home.php');
