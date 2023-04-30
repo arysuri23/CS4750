@@ -1,10 +1,11 @@
 <?php
+#code from tutorial for google log in integration at https://medium.com/@laraveltuts/how-to-login-with-google-in-php-3c9ea2abe2eb
 require 'config.php';
 if(isset($_SESSION['login_id'])){
     header('Location: home.php');
     exit;
 }
-require '../google-login-php/google-api/vendor/autoload.php';
+require 'google-api/vendor/autoload.php';
 // Creating new google client instance
 $client = new Google_Client();
 // Enter your Client ID
@@ -29,26 +30,16 @@ if(isset($_GET['code'])):
         $full_name = mysqli_real_escape_string($db_connection, trim($google_account_info->name));
         $email = mysqli_real_escape_string($db_connection, $google_account_info->email);
         $profile_pic = mysqli_real_escape_string($db_connection, $google_account_info->picture);
-
         // checking user already exists or not
-        $query = "SELECT google_id FROM google_users WHERE google_id=?";
-        $get_user_statement = $db_connection->prepare($query);
-        $get_user_statement->bind_param("i", $id);
-        $get_user_statement->execute();
-        $get_user_result = $get_user_statement->get_result();
-
-        //$get_user = mysqli_query($db_connection, "SELECT `google_id` FROM `google_users` WHERE `google_id`='$id'");
-        if(mysqli_num_rows($get_user_result) > 0){
+        $get_user = mysqli_query($db_connection, "SELECT `google_id` FROM `google_users` WHERE `google_id`='$id'");
+        if(mysqli_num_rows($get_user) > 0){
             $_SESSION['login_id'] = $id; 
             header('Location: home.php');
             exit;
         }
         else{
             // if user not exists we will insert the user
-            $insert = $db_connection->prepare("INSERT INTO `google_users`(`google_id`, `name`, `email`, `profile_image`) VALUES (?, ?, ?, ?)");
-            $insert->bind_param("isss", $id, $full_name, $email, $profile_pic);
-            $insert->execute();
-            //$insert = mysqli_query($db_connection, "INSERT INTO `google_users`(`google_id`,`name`,`email`,`profile_image`) VALUES('$id','$full_name','$email','$profile_pic')");
+            $insert = mysqli_query($db_connection, "INSERT INTO `google_users`(`google_id`,`name`,`email`,`profile_image`) VALUES('$id','$full_name','$email','$profile_pic')");
             if($insert){
                 $_SESSION['login_id'] = $id; 
                 header('Location: home.php');

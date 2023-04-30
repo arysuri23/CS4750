@@ -34,15 +34,15 @@
 
 <body style="background-color:#f7f7ff;">
     <br>
-    <div class="container">
+
     <h1 class="display-4"> Answer Questions </h1>
     <ul>
         <?php foreach ($questions_asked as $q): ?>
         <div>
             <li>
-            <h4> <?php echo $q['question_text']; ?>  </h4>
+            <p class="text-left"> <?php echo $q['question_text']; ?>  </p>
             <form name="answerForm" action="home.php" method="post">
-            </div> 
+        </div> 
             Answer:
             <input type="text" class="form-control" name="answer" id = "answer" />
             <input type="hidden" class="form-control" name="question_id" id = "question_id" value = "<?php echo $q['question_id']?>" />
@@ -50,7 +50,7 @@
             <input type="submit" name="actionBtn" value="Add Answer"  />
             </form>
             </li>
-        </div>
+       
         <hr>
         <?php endforeach; ?>
     </ul>

@@ -56,12 +56,13 @@ table {
   <h1 class="display-4">Ask a Question!</h1>
     <div class="row mb-3 mx-3">
     Restaurant Name:
+    <form name="questionForm" action="home.php" method="post">
      <input id="name" name = "name"  value= "<?php echo $name_value; ?>" readonly="readonly"/>
     </div> 
     <h6>Question:</h6>
-    <form name="questionForm" action="home.php" method="post">
+  
     <input type="text" class="form-control" name="question" id = "question" /><br>
-    <center><button type="submit" name="actionBtn" class="btn btn-info" style="background-color:#E53E3E">Post Question</button></center>
+    <center><button value = "Add Question" type="submit" name="actionBtn" class="btn btn-info" style="background-color:#E53E3E">Post Question</button></center>
     </div> 
 
     

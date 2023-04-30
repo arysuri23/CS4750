@@ -307,7 +307,7 @@ ul, ul li {
                             <td class="progress-bar-container">
                                 <div class="fit-progressbar fit-progressbar-bar star-progress-bar">
                                     <div class="fit-progressbar-background">
-                                        <span class="progress-fill" style="width: <?php echo $num_overall_4/$num_reviews * 100?>;"></span>
+                                        <span class="progress-fill" style="width: <?php echo $num_overall_4/$num_reviews * 100?>%;"></span>
                                     </div>
                                 </div>
                             </td>

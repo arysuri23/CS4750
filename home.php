@@ -21,6 +21,7 @@ else{
 }
 
 $email = $user['email'];
+
 $revOrMan="";
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -94,6 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $question = $_POST['question'];
 
 
+
         $questions = mysqli_query($db_connection, "SELECT * FROM `question`");
         $question_id =  mysqli_num_rows($questions) + 1;
         $restaurant_row = mysqli_query($db_connection, "SELECT * FROM `restaurant` WHERE `name`='$restaurant_name'");
@@ -103,19 +105,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $date = date("Y-m-d");
 
 
-        $insert = mysqli_query($db_connection, "INSERT INTO `question`(`question_id`, `question_text`, `question_date`, `restaurant_id`) VALUES ('$question_id', '$question', '$date', '$restaurant_id')");                      
+        $insert = mysqli_query($db_connection, "INSERT INTO `question`(`question_id`, `question_text`, `question_date`, `restaurant_id`, `answered`) VALUES ('$question_id', '$question', '$date', '$restaurant_id', '0')");                      
        
     } 
     elseif (!empty($_POST['actionBtn']) && ($_POST['actionBtn'] == "Add Answer")){
         $answer = $_POST['answer'];
         $question_id = $_POST['question_id'];
-
+        $question_id = intval($question_id);
         $answers = mysqli_query($db_connection, "SELECT * FROM `answer`");
         $answer_id =  mysqli_num_rows($answers) + 1;
         
         $date = date("Y-m-d");
-
-        $insert = mysqli_query($db_connection, "INSERT INTO `answer`(`answer_id`, `answer_text`, `answer_date`, `question_id`) VALUES ('$answer_id', '$answer', '$date', '$question_id')");                      
+        $insert = mysqli_query($db_connection, "INSERT INTO `answer`(`answer_id`, `answer_text`, `answer_date`, `question_id`) VALUES ('$answer_id', '$answer', '$date', '$question_id')");        
+        $update = mysqli_query($db_connection, "UPDATE `question` SET `answered`='1' WHERE `question`.`question_id`='$question_id'");           
        
     }
 }
@@ -235,9 +237,7 @@ if($has_restaurant){
         <h2 class="heading">My Account</h2>
     </div>
     <div class="_container">
-        <div class="_img">
-            <img src="<?php echo $user['profile_image']; ?>" alt="<?php echo $user['name']; ?>">
-        </div>
+        
         <br>
         <?php if (!$revOrManChosen):  ?>
             <div class="_info">

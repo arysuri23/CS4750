@@ -68,7 +68,7 @@ table {
         <input type="time" id="closeTime" name="closeTime" required>
     </div>
     <br>
-    <center><button type="submit" name="actionBtn" class="btn btn-info" style="background-color:#E53E3E">Add Restaurant</button></center>
+    <center><button value = "Add Restaurant" type="submit" name="actionBtn" class="btn btn-info" style="background-color:#E53E3E">Add Restaurant</button></center>
 </form>
 </div>
 <hr/>
