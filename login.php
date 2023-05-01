@@ -9,9 +9,11 @@ require 'google-api/vendor/autoload.php';
 // Creating new google client instance
 $client = new Google_Client();
 // Enter your Client ID
-$client->setClientId(getenv('CLIENT_ID'));
+$client->setClientId('739444035110-v6gb9db3ipi7ag3isequ3up504h55mn1.apps.googleusercontent.com');
+//$client->setClientId(getenv('CLIENT_ID'));
 // Enter your Client Secrect
-$client->setClientSecret(getenv('CLIENT_SECRET'));
+$client->setClientSecret('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');
+// $client->setClientSecret(getenv('CLIENT_SECRET'));
 // Enter the Redirect URL
 $client->setRedirectUri('http://localhost/CS4750/login.php');
 // Adding those scopes which we want to get (email & profile Information)
